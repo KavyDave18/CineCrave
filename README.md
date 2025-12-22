@@ -6,3 +6,5 @@ Just Clean the dataset and done feature selection for the vector embadding. tomm
 
 PipeLine:
 <img width="1280" height="720" alt="image" src="https://github.com/user-attachments/assets/a1d473bf-281b-4b5d-b10d-54f8766f77a3" />
+
+today complete the vectorization part and now all the movies and it content is in vector form.
