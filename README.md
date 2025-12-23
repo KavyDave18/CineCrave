@@ -16,17 +16,18 @@ cast, crew, and overview text.
 </p>
 
 <p>
-The project focuses on understanding how recommendation systems work internally,
-including feature engineering, similarity computation, and evaluation of results.
+The project is implemented using <b>Jupyter notebooks</b> to clearly demonstrate
+each stage of the recommendation pipeline, including feature engineering,
+similarity computation, and evaluation.
 </p>
 
 <hr>
 
 <h2>Problem Statement</h2>
 <p>
-Finding movies similar to a user’s interest can be challenging without understanding
-content similarity. This project aims to recommend relevant movies based purely on
-movie metadata, without using user ratings or collaborative filtering.
+Users often find it difficult to discover movies similar to the ones they like.
+This project aims to recommend relevant movies using movie metadata alone,
+without relying on user ratings or collaborative filtering.
 </p>
 
 <hr>
@@ -35,7 +36,7 @@ movie metadata, without using user ratings or collaborative filtering.
 
 <h3>1. Data Preprocessing</h3>
 <ul>
-    <li>Cleaned movie metadata</li>
+    <li>Cleaned and filtered movie metadata</li>
     <li>Converted text to lowercase and removed unnecessary spaces</li>
     <li>Combined genres, keywords, cast, crew, and overview into a single text feature</li>
 </ul>
@@ -43,13 +44,13 @@ movie metadata, without using user ratings or collaborative filtering.
 <h3>2. Feature Engineering</h3>
 <ul>
     <li>Used <b>TF-IDF Vectorizer</b> to convert text data into numerical vectors</li>
-    <li>TF-IDF reduces the impact of common words and highlights meaningful terms</li>
+    <li>TF-IDF helps reduce the influence of common terms and highlight meaningful words</li>
 </ul>
 
 <h3>3. Similarity Computation</h3>
 <ul>
-    <li>Calculated similarity between movies using <b>cosine similarity</b></li>
-    <li>Built a movie-to-movie similarity matrix</li>
+    <li>Computed movie similarity using <b>cosine similarity</b></li>
+    <li>Generated a movie-to-movie similarity matrix</li>
 </ul>
 
 <h3>4. Recommendation Logic</h3>
@@ -57,35 +58,11 @@ movie metadata, without using user ratings or collaborative filtering.
 Given a movie title, the system:
 </p>
 <ol>
-    <li>Finds the movie index</li>
-    <li>Fetches similarity scores</li>
-    <li>Sorts movies by similarity</li>
-    <li>Returns the top-N similar movies</li>
+    <li>Identifies the corresponding movie index</li>
+    <li>Retrieves similarity scores</li>
+    <li>Sorts movies based on similarity</li>
+    <li>Returns the top-N most similar movies</li>
 </ol>
-
-<hr>
-
-<h2>Project Structure</h2>
-
-<pre>
-CineCrave/
-│
-├── data/
-│   └── movies_clean.csv
-│
-├── notebooks/
-│   └── experiments.ipynb
-│
-├── src/
-│   ├── data_preprocessing.py
-│   ├── vectorization.py
-│   ├── similarity.py
-│   └── recommender.py
-│
-├── main.py
-├── requirements.txt
-└── README.html
-</pre>
 
 <hr>
 
@@ -93,23 +70,12 @@ CineCrave/
 <ul>
     <li>Python</li>
     <li>Pandas, NumPy</li>
-    <li>Scikit-learn (TF-IDF, Cosine Similarity)</li>
+    <li>Scikit-learn (TF-IDF Vectorizer, Cosine Similarity)</li>
 </ul>
 
 <hr>
 
-<h2>How to Run</h2>
-
-<pre>
-git clone https://github.com/KavyDave18/CineCrave
-cd CineCrave
-pip install -r requirements.txt
-python main.py
-</pre>
-
-<hr>
-
-<h2>Example Usage</h2>
+<h2>Example</h2>
 
 <pre>
 recommend("Avatar", top_n=5)
@@ -131,9 +97,9 @@ recommend("Avatar", top_n=5)
 
 <h3>What Works Well</h3>
 <ul>
-    <li>Movies with similar genres and themes are grouped correctly</li>
-    <li>TF-IDF performs better than simple count-based methods</li>
-    <li>System is fast and easy to extend</li>
+    <li>Movies with similar genres and themes are recommended correctly</li>
+    <li>TF-IDF performs better than basic count-based methods</li>
+    <li>The system is simple, fast, and easy to extend</li>
 </ul>
 
 <h3>Limitations</h3>
@@ -147,7 +113,7 @@ recommend("Avatar", top_n=5)
 
 <h2>Future Improvements</h2>
 <ul>
-    <li>Use semantic embeddings for better contextual similarity</li>
+    <li>Use semantic embeddings for deeper contextual similarity</li>
     <li>Add fuzzy matching for movie titles</li>
     <li>Build a web interface or REST API</li>
 </ul>
@@ -156,18 +122,17 @@ recommend("Avatar", top_n=5)
 
 <h2>Key Learning</h2>
 <p>
-The biggest takeaway from this project is that building a recommendation system
-is not just about implementation, but about understanding model behavior,
-limitations, and making informed design decisions.
+This project reinforced that building a recommendation system is not only about
+writing code, but also about evaluating results, understanding limitations, and
+making informed design decisions.
 </p>
 
 <hr>
 
 <h2>Conclusion</h2>
 <p>
-CineCrave represents a solid baseline content-based recommendation system with
-clear scope for future improvements. It reflects both technical implementation
-and evaluation-driven thinking.
+CineCrave represents a solid baseline content-based recommendation system built
+for learning and experimentation, with a clear path for future improvements.
 </p>
 
 </body>
