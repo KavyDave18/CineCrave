@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CineCrave – Movie Recommendation System</title>
 </head>
 <body>
 
