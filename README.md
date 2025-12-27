@@ -2,137 +2,225 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- <title>Movie Recommendation System – FAANG-Style ML Engineering</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            margin: 40px;
+            color: #222;
+        }
+        h1, h2, h3 {
+            color: #0a3d62;
+        }
+        h1 {
+            border-bottom: 2px solid #0a3d62;
+            padding-bottom: 10px;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 12px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+        ul {
+            margin-left: 20px;
+        }
+        .highlight {
+            background-color: #eef6ff;
+            padding: 12px;
+            border-left: 4px solid #0a3d62;
+            margin: 20px 0;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+    </style> -->
 </head>
 <body>
 
-<h1>🎬 CineCrave – Movie Recommendation System</h1>
+<h1>🎬 Movie Recommendation System (FAANG-Style ML Engineering)</h1>
 
-<h2>Overview</h2>
-<p>
-CineCrave is a <b>content-based movie recommendation system</b> built using Python.
-It recommends movies based on similarity in content such as genres, keywords,
-cast, crew, and overview text.
-</p>
+<div class="section">
+    <h2>Overview</h2>
+    <p>
+        This project implements a <strong>content-based movie recommendation system</strong> that
+        evolves from a <strong>TF-IDF baseline</strong> to a <strong>scalable, semantic,
+        embedding-based recommender</strong> using <strong>Sentence-BERT</strong> and
+        <strong>FAISS (Approximate Nearest Neighbors)</strong>.
+    </p>
+    <p>
+        The emphasis is on <strong>engineering correctness, scalability, and design trade-offs</strong>,
+        not UI or surface-level features.
+    </p>
+</div>
 
-<p>
-The project is implemented using <b>Jupyter notebooks</b> to clearly demonstrate
-each stage of the recommendation pipeline, including feature engineering,
-similarity computation, and evaluation.
-</p>
+<div class="section">
+    <h2>Why This Project Matters</h2>
+    <ul>
+        <li>Clear baseline → upgraded system evolution</li>
+        <li>Semantic understanding using dense embeddings</li>
+        <li>Scalable retrieval using FAISS (ANN)</li>
+        <li>Offline vs online computation separation</li>
+        <li>Clean, modular <code>.py</code> codebase</li>
+        <li>CLI interface (no notebook dependency)</li>
+        <li>Documented failure cases and trade-offs</li>
+    </ul>
+</div>
 
-<hr>
+<div class="section">
+    <h2>Problem Statement</h2>
+    <p>
+        Given a movie title, recommend the <strong>top-N most similar movies</strong> based on
+        <strong>semantic similarity of content</strong> (genres, overview, keywords, cast, crew),
+        rather than exact keyword overlap.
+    </p>
+</div>
 
-<h2>Problem Statement</h2>
-<p>
-Users often find it difficult to discover movies similar to the ones they like.
-This project aims to recommend relevant movies using movie metadata alone,
-without relying on user ratings or collaborative filtering.
-</p>
+<div class="section">
+    <h2>System Evolution</h2>
 
-<hr>
+    <h3>1️⃣ Baseline — TF-IDF + Cosine Similarity</h3>
+    <ul>
+        <li>Combined textual features into a single <code>tags</code> field</li>
+        <li>Vectorized using TF-IDF</li>
+        <li>Used cosine similarity for recommendations</li>
+    </ul>
+    <p><strong>Limitations:</strong></p>
+    <ul>
+        <li>Keyword-dependent (no semantic understanding)</li>
+        <li>Fails on paraphrases and synonyms</li>
+        <li>Sparse vectors → high memory usage</li>
+        <li>Poor scalability</li>
+    </ul>
 
-<h2>Approach</h2>
+    <h3>2️⃣ Upgraded System — Semantic Embeddings</h3>
+    <ul>
+        <li>Used Sentence-BERT (MiniLM)</li>
+        <li>Each movie mapped to a 384-dimensional dense vector</li>
+        <li>Embeddings generated once offline and cached</li>
+        <li>Cosine similarity used for semantic matching</li>
+    </ul>
 
-<h3>1. Data Preprocessing</h3>
-<ul>
-    <li>Cleaned and filtered movie metadata</li>
-    <li>Converted text to lowercase and removed unnecessary spaces</li>
-    <li>Combined genres, keywords, cast, crew, and overview into a single text feature</li>
-</ul>
+    <h3>3️⃣ Scalable Retrieval — FAISS (ANN)</h3>
+    <ul>
+        <li>Brute-force cosine similarity replaced with FAISS</li>
+        <li>Normalized embeddings + inner product search</li>
+        <li>FAISS as primary retrieval, brute-force as fallback</li>
+    </ul>
+</div>
 
-<h3>2. Feature Engineering</h3>
-<ul>
-    <li>Used <b>TF-IDF Vectorizer</b> to convert text data into numerical vectors</li>
-    <li>TF-IDF helps reduce the influence of common terms and highlight meaningful words</li>
-</ul>
+<div class="section">
+    <h2>Architecture Overview</h2>
+    <pre>
+Movie Text (tags)
+        ↓
+Sentence-BERT (MiniLM)
+        ↓
+Dense Embeddings (384-D)
+        ↓
+FAISS ANN Index
+        ↓
+Top-K Similar Movies
+    </pre>
+    <p>
+        <strong>Offline:</strong> text processing, embedding generation, index building<br>
+        <strong>Online:</strong> query embedding, ANN search, result mapping
+    </p>
+</div>
 
-<h3>3. Similarity Computation</h3>
-<ul>
-    <li>Computed movie similarity using <b>cosine similarity</b></li>
-    <li>Generated a movie-to-movie similarity matrix</li>
-</ul>
+<div class="section">
+    <h2>Project Structure</h2>
+    <pre>
+src/
+ ├── embeddings.py
+ ├── faiss_index.py
+ ├── recommender.py
+ ├── config.py
+ ├── cli.py
+ ├── evaluation.py
+ └── utils.py
+    </pre>
+</div>
 
-<h3>4. Recommendation Logic</h3>
-<p>
-Given a movie title, the system:
-</p>
-<ol>
-    <li>Identifies the corresponding movie index</li>
-    <li>Retrieves similarity scores</li>
-    <li>Sorts movies based on similarity</li>
-    <li>Returns the top-N most similar movies</li>
-</ol>
+<div class="section">
+    <h2>CLI Usage</h2>
+    <pre>
+python cli.py recommend --movie "Avatar" --top_k 5
+    </pre>
+    <p>
+        Features include case-insensitive input handling and graceful error responses.
+    </p>
+</div>
 
-<hr>
+<div class="section">
+    <h2>Evaluation Strategy</h2>
+    <p>
+        This is an <strong>unsupervised system</strong>; traditional accuracy metrics are misleading.
+        Evaluation focuses on:
+    </p>
+    <ul>
+        <li>Manual relevance checks</li>
+        <li>TF-IDF vs embedding output comparison</li>
+        <li>Semantic coherence of recommendations</li>
+        <li>Failure case analysis</li>
+    </ul>
+</div>
 
-<h2>Technologies Used</h2>
-<ul>
-    <li>Python</li>
-    <li>Pandas, NumPy</li>
-    <li>Scikit-learn (TF-IDF Vectorizer, Cosine Similarity)</li>
-</ul>
+<div class="section">
+    <h2>Known Failure Cases</h2>
+    <ul>
+        <li>Very short or vague descriptions</li>
+        <li>Rare or domain-specific terms</li>
+        <li>Similarity does not equal personalization</li>
+    </ul>
+</div>
 
-<hr>
+<div class="section">
+    <h2>Key Engineering Decisions</h2>
+    <ul>
+        <li><strong>Embeddings over TF-IDF:</strong> semantic understanding and scalability</li>
+        <li><strong>Cosine similarity:</strong> direction-based similarity for embeddings</li>
+        <li><strong>FAISS:</strong> scalable ANN search for large datasets</li>
+        <li><strong>No UI:</strong> focus on system correctness</li>
+        <li><strong>Caching:</strong> offline computation, fast online inference</li>
+    </ul>
+</div>
 
-<h2>Example</h2>
+<div class="section">
+    <h2>Future Work</h2>
+    <ul>
+        <li>User-level personalization</li>
+        <li>Hybrid ranking (similarity + popularity + novelty)</li>
+        <li>Incremental updates for new movies</li>
+        <li>Vector database integration</li>
+        <li>API layer for deployment</li>
+    </ul>
+</div>
 
-<pre>
-recommend("Avatar", top_n=5)
-</pre>
+<div class="section">
+    <h2>Tech Stack</h2>
+    <ul>
+        <li>Python</li>
+        <li>Sentence-Transformers (MiniLM)</li>
+        <li>FAISS (ANN)</li>
+        <li>NumPy, scikit-learn</li>
+        <li>Pickle for artifact storage</li>
+    </ul>
+</div>
 
-<p>Sample Output:</p>
-
-<pre>
-['Pirates of the Caribbean: At World's End',
- 'John Carter',
- 'Spectre',
- 'The Dark Knight Rises',
- 'Spider-Man 3']
-</pre>
-
-<hr>
-
-<h2>Evaluation & Observations</h2>
-
-<h3>What Works Well</h3>
-<ul>
-    <li>Movies with similar genres and themes are recommended correctly</li>
-    <li>TF-IDF performs better than basic count-based methods</li>
-    <li>The system is simple, fast, and easy to extend</li>
-</ul>
-
-<h3>Limitations</h3>
-<ul>
-    <li>No true semantic understanding of text</li>
-    <li>Synonyms are treated as different words</li>
-    <li>Context and narrative meaning are not captured</li>
-</ul>
-
-<hr>
-
-<h2>Future Improvements</h2>
-<ul>
-    <li>Use semantic embeddings for deeper contextual similarity</li>
-    <li>Add fuzzy matching for movie titles</li>
-    <li>Build a web interface or REST API</li>
-</ul>
-
-<hr>
-
-<h2>Key Learning</h2>
-<p>
-This project reinforced that building a recommendation system is not only about
-writing code, but also about evaluating results, understanding limitations, and
-making informed design decisions.
-</p>
-
-<hr>
-
-<h2>Conclusion</h2>
-<p>
-CineCrave represents a solid baseline content-based recommendation system built
-for learning and experimentation, with a clear path for future improvements.
-</p>
+<div class="highlight">
+    <strong>Resume One-Liner:</strong><br>
+    Built a scalable, embedding-based movie recommender system using Sentence-BERT and FAISS,
+    demonstrating semantic similarity search, ANN optimization, and clean ML pipeline design.
+</div>
 
 </body>
 </html>
