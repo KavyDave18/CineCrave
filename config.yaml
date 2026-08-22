@@ -1,0 +1,27 @@
+paths:
+  data_dir: data/
+  embeddings_dir: candidate_generation/embeddings/
+  movie_vectors: movies_embeddings.pkl
+  faiss_index: movie_faiss.index
+
+model:
+  embedding_model: all-MiniLM-L6-v2
+
+ranking:
+  weights:
+    similarity: 0.85
+    popularity: 0.10
+    novelty: 0.05
+
+candidate_generation:
+  faiss_k: 50
+  popular_k: 10
+  final_k: 10
+
+decision_layer:
+  use_mmr: true
+  diversity_lambda: 0.5
+  max_per_franchise: 2
+
+thresholds:
+  min_similarity: 0.2
