@@ -1,11 +1,18 @@
 # 🎬 CineCrave — Production-Grade Movie Recommender System
 
 <p align="center">
+  <a href="https://cinecravekd-egzyafyzmpxqf78ztjnxss.streamlit.app/" target="_blank">
+    <img src="https://static.streamlit.io/badges/streamlit_badge_black_white.svg" alt="Streamlit App" />
+  </a>
   <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" />
   <img src="https://img.shields.io/badge/FAISS-Vector%20Search-00ADD8?style=for-the-badge&logo=meta&logoColor=white" />
   <img src="https://img.shields.io/badge/Sentence--BERT-all--MiniLM--L6--v2-FFA116?style=for-the-badge&logo=huggingface&logoColor=white" />
   <img src="https://img.shields.io/badge/Algorithm-MMR%20Diversity-FF4B4B?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Architecture-Two--Stage%20Retrieve%20%26%20Rank-4CAF50?style=for-the-badge" />
+</p>
+
+<p align="center">
+  🚀 <strong>Live Demo:</strong> <a href="https://cinecravekd-egzyafyzmpxqf78ztjnxss.streamlit.app/"><strong>https://cinecravekd-egzyafyzmpxqf78ztjnxss.streamlit.app/</strong></a>
 </p>
 
 ---
@@ -16,6 +23,8 @@
 
 Unlike toy recommender notebooks that simply compute cosine similarity across an entire catalog, CineCrave decouples **fast vector candidate generation ($O(\log N)$ via FAISS)** from **multi-objective hybrid ranking** (semantic relevance, log-popularity, and novelty) and a **decision layer** utilizing **Maximal Marginal Relevance (MMR)** to prevent filter bubbles and franchise clustering.
 
+> 🚀 **Live App:** Try the live interactive web app at [cinecravekd-egzyafyzmpxqf78ztjnxss.streamlit.app](https://cinecravekd-egzyafyzmpxqf78ztjnxss.streamlit.app/)
+> 
 > 💡 **Visual Interactive Docs:** Open [`docs.html`](file:///Users/kavydave/Desktop/CineCrave-main/docs.html) in any browser to see the colorful animated system pipeline and live simulator!
 
 ---
