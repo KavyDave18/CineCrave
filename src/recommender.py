@@ -8,8 +8,9 @@ import uuid
 
 cfg = load_config()
 
-def recommend(movie_name, title_to_index, index_to_title, vectors, faiss_index,popularity_map):
+def recommend(movie_name, title_to_index, index_to_title, vectors, faiss_index, popularity_map, cfg_override=None):
     request_id = str(uuid.uuid4())
+    active_cfg = cfg_override if cfg_override is not None else cfg
     try:
 
         print(f"[REQUEST START] id={request_id} movie= {movie_name}")
@@ -21,7 +22,7 @@ def recommend(movie_name, title_to_index, index_to_title, vectors, faiss_index,p
         idx = title_to_index[movie_name]
         query_vector = vectors[idx]
 
-        indices, scores = search_faiss(faiss_index, query_vector, cfg)
+        indices, scores = search_faiss(faiss_index, query_vector, active_cfg)
 
         candidate_titles = []
         for i,score in zip(indices,scores):
@@ -35,8 +36,8 @@ def recommend(movie_name, title_to_index, index_to_title, vectors, faiss_index,p
 
         ## Ranking
 
-        features = build_features(candidate_titles, popularity_map,cfg)
-        ranked_titles = hybrid_rank(features,cfg)
+        features = build_features(candidate_titles, popularity_map, active_cfg)
+        ranked_titles = hybrid_rank(features, active_cfg)
 
         print(
             f"[RANKED] id={request_id} top5="
@@ -48,17 +49,17 @@ def recommend(movie_name, title_to_index, index_to_title, vectors, faiss_index,p
 
         ## Decision Layer
 
-        constrained = apply_constraints(ranked_titles, cfg)
+        constrained = apply_constraints(ranked_titles, active_cfg)
         final_output = post_process(
             constrained,
-            cfg,
+            active_cfg,
             vectors=vectors,
             title_to_index=title_to_index
         )
 
         ## Final Layer
 
-        top_k = cfg["candidate_generation"]["final_k"]
+        top_k = active_cfg["candidate_generation"]["final_k"]
         result = final_output[:top_k]
     
         print(f"[REQUEST END] id={request_id} returned={len(result)}")
